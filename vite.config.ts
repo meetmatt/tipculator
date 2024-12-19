@@ -3,7 +3,7 @@ import type {UserConfig} from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import {resolve} from 'path'
 
-export default ({mode}) => {
+export default ({mode}: {mode: string}) => {
   process.env = {...process.env, ...loadEnv(mode, process.cwd())};
   return defineConfig({
     plugins: [react()],
@@ -20,15 +20,15 @@ export default ({mode}) => {
       sourcemap: true,
     },
     preview: {
-      port: parseInt(process.env.PORT),
+      port: parseInt(process.env.PORT as string),
       strictPort: true,
       host: true,
     },
     server: {
-      port: parseInt(process.env.PORT),
+      port: parseInt(process.env.PORT as string),
       strictPort: true,
       host: true,
-      origin: `http://0.0.0.0:${parseInt(process.env.PORT)}`,
+      origin: `http://0.0.0.0:${parseInt(process.env.PORT as string)}`,
     },
   }) satisfies UserConfig
 }
