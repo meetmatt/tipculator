@@ -1,0 +1,66 @@
+version: "3"
+
+vars:
+  DOCKER_COMPOSE: "docker compose"
+
+tasks:
+  build:
+    desc: "Build container images"
+    dotenv: ['.env.{{.ENV}}']
+    env:
+      BUILDKIT_PROGRESS: plain
+    cmd: "{{.DOCKER_COMPOSE}} {{.COMPOSE_FILES}} build"
+    internal: true
+
+  start:
+    desc: "Start services"
+    dotenv: ['.env.{{.ENV}}']
+    cmd: "{{.DOCKER_COMPOSE}} {{.COMPOSE_FILES}} up --remove-orphans --quiet-pull --no-color --no-log-prefix --force-recreate --detach"
+    internal: true
+
+  ps:
+    desc: "List services"
+    dotenv: ['.env.{{.ENV}}']
+    cmd: "{{.DOCKER_COMPOSE}} {{.COMPOSE_FILES}} ps"
+    internal: true
+
+  logs:
+    desc: "View logs"
+    dotenv: ['.env.{{.ENV}}']
+    cmd: "{{.DOCKER_COMPOSE}} {{.COMPOSE_FILES}} logs -f"
+    internal: true
+
+  open:
+    desc: "Open the service in a browser"
+    dotenv: ['.env.{{.ENV}}']
+    # noinspection HttpUrlsUsage
+    cmd: "open http://$({{.DOCKER_COMPOSE}} {{.COMPOSE_FILES}} port react ${PORT})"
+    internal: true
+
+  stop:
+    desc: "Stop services"
+    dotenv: ['.env.{{.ENV}}']
+    cmd: "{{.DOCKER_COMPOSE}} {{.COMPOSE_FILES}} down --remove-orphans --rmi all --volumes"
+    internal: true
+
+  dev-*:
+    desc: "Run command in the development environment"
+    vars:
+      TASK_NAME: "{{index .MATCH 0}}"
+    cmds:
+      - task: '{{.TASK_NAME}}'
+        vars:
+          COMPOSE_FILES: "-f compose.yaml -f compose.override.yaml"
+          ENV: dev
+    silent: true
+
+  prod-*:
+    desc: "Run command in the production environment"
+    vars:
+      TASK_NAME: "{{index .MATCH 0}}"
+    cmds:
+      - task: '{{.TASK_NAME}}'
+        vars:
+          COMPOSE_FILES: "-f compose.yaml"
+          ENV: prod
+    silent: true
