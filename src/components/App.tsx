@@ -1,4 +1,6 @@
 import React, {useState} from "react"
+import Button from "./Button.tsx"
+import TextInput from "./TextInput.tsx"
 
 const initialFriends = [
   {
@@ -21,12 +23,6 @@ const initialFriends = [
   },
 ]
 
-function Button({children, onClick}: {
-  children: React.ReactNode,
-  onClick(event: React.MouseEvent<HTMLButtonElement>)
-}) {
-  return <button className="button" onClick={onClick}>{children}</button>;
-}
 
 function Friend({name, image, balance}: { name: string, image: string, balance: number }) {
   return <li>
@@ -41,17 +37,6 @@ function Friend({name, image, balance}: { name: string, image: string, balance: 
     }
     <Button>Select</Button>
   </li>
-}
-
-function TextInput({children, value, onChange}: {
-  label: string;
-  value: string,
-  onChange(event: ChangeEvent<HTMLInputElement>)
-}) {
-  return <>
-    <label>{children}</label>
-    <input type="text" value={value} onChange={onChange}/>
-  </>
 }
 
 function AddFriendForm({addFriend}: { addFriend({id: number, name: string, image: string}): void }) {
