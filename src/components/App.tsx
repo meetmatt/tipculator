@@ -1,4 +1,4 @@
-import {useState} from "react"
+import React, {useState} from "react"
 
 const initialFriends = [
   {
@@ -21,6 +21,12 @@ const initialFriends = [
   },
 ]
 
+function Button({children, onClick}: {
+  children: React.ReactNode,
+  onClick(event: React.MouseEvent<HTMLButtonElement>)
+}) {
+  return <button className="button" onClick={onClick}>{children}</button>;
+}
 
 function Friend({name, image, balance}: { name: string, image: string, balance: number }) {
   return <li>
@@ -33,8 +39,19 @@ function Friend({name, image, balance}: { name: string, image: string, balance: 
         </p>
         : <p>You and {name} are even</p>
     }
-    <button className="button">Select</button>
+    <Button>Select</Button>
   </li>
+}
+
+function TextInput({children, value, onChange}: {
+  label: string;
+  value: string,
+  onChange(event: ChangeEvent<HTMLInputElement>)
+}) {
+  return <>
+    <label>{children}</label>
+    <input type="text" value={value} onChange={onChange}/>
+  </>
 }
 
 function AddFriendForm({addFriend}: { addFriend({id: number, name: string, image: string}): void }) {
@@ -45,40 +62,58 @@ function AddFriendForm({addFriend}: { addFriend({id: number, name: string, image
 
   function handleOpen(e) {
     e.preventDefault()
-    setIsFormOpen(true)
+    initializeForm()
+    openForm()
+  }
+
+  function initializeForm() {
     setName("")
     setId(Math.floor(Math.random() * 100000))
     setImage(`https://i.pravatar.cc/48?u=${id}`)
   }
 
+  function openForm() {
+    setIsFormOpen(true)
+  }
+
+  function closeForm() {
+    setIsFormOpen(false)
+  }
+
   function handleClose(e) {
     e.preventDefault()
-    setIsFormOpen(false)
+    closeForm()
   }
 
   function handleSubmit(e) {
     e.preventDefault()
     addFriend(id, name, image)
-    setIsFormOpen(false)
+    closeForm()
+  }
+
+  function handleNameChange(e) {
+    setName(e.target.value)
+  }
+
+  function handleImageChange(e) {
+    setImage(e.target.value)
   }
 
   return isFormOpen
     ? <>
       <form className="form-add-friend" onSubmit={(e) => e.preventDefault()}>
-        <label>👯‍♀️Friend name</label>
-        <input type="text" value={name} onChange={(e) => setName(e.target.value)}/>
-        <label>🌄️Image URL</label>
-        <input type="text" value={image} onChange={(e) => setImage(e.target.value)}/>
-        <button className="button" onClick={handleSubmit}>Add</button>
+        <TextInput value={name} onChange={handleNameChange}>👯‍♀️Friend name</TextInput>
+        <TextInput value={image} onChange={handleImageChange}>🌄️Image URL</TextInput>
+        <Button onClick={handleSubmit}>Add</Button>
       </form>
-      <button className="button" onClick={handleClose}>Close</button>
+      <Button onClick={handleClose}>Close</Button>
     </>
-    : <button className="button" onClick={handleOpen}>Add friend</button>
+    : <Button onClick={handleOpen}>Add friend</Button>
 }
 
-function FriendList({friends, addFriend}: {
+function FriendList({friends, onAddFriend}: {
   friends: [{ name: string, id: number, image: string, balance: number }],
-  addFriend({id: number, name: string, image: string}): void
+  onAddFriend({id: number, name: string, image: string}): void
 }) {
   return <div className="sidebar">
     <ul>
@@ -86,14 +121,14 @@ function FriendList({friends, addFriend}: {
         <Friend key={friend.id} name={friend.name} image={friend.image} balance={friend.balance}/>
       ))}
     </ul>
-    <AddFriendForm addFriend={addFriend}/>
+    <AddFriendForm addFriend={onAddFriend}/>
   </div>
 }
 
-export default function App() {
+function SplitTheBill() {
   const [friends, setFriends] = useState(initialFriends.slice())
 
-  function onAddFriend(id: number, name: string, image: string) {
+  function handleAddFriend(id: number, name: string, image: string) {
     setFriends((friends) =>
       [...friends, {
         id: id,
@@ -105,6 +140,10 @@ export default function App() {
   }
 
   return <div className="app">
-    <FriendList friends={friends} addFriend={onAddFriend}/>
+    <FriendList friends={friends} onAddFriend={handleAddFriend}/>
   </div>
+}
+
+export default function App() {
+  return <SplitTheBill/>
 }
