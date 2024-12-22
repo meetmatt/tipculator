@@ -9,8 +9,7 @@ const FriendList: React.FC<FriendListProps> = ({friends}) => {
   return <ul>
     {
       friends.map((friend) => (
-        <FriendListItem key={friend.id} name={friend.name} image={friend.image} balance={friend.balance}
-        />
+        <FriendListItem key={friend.id} name={friend.name} image={friend.image} balance={friend.balance}/>
       ))
     }
   </ul>

@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {Friend} from "./FriendListItem.tsx";
 import FriendList from "./FriendList.tsx";
-import AddFriendForm from "./AddFriendForm.tsx";
+import FriendAddForm from "./FriendAddForm.tsx";
 
 const initialFriends: Friend[] = [
   {
@@ -41,7 +41,7 @@ const SplitTheBill: React.FC = () => {
   return <div className="app">
     <div className="sidebar">
       <FriendList friends={friends}/>
-      <AddFriendForm onAddFriend={handleOnAddFriend}/>
+      <FriendAddForm onAddFriend={handleOnAddFriend}/>
     </div>
   </div>
 }
