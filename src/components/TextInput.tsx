@@ -3,12 +3,14 @@ import React from "react";
 interface TextInputProps {
   children: React.ReactNode,
   value: string;
-  onChange(event: ChangeEvent<HTMLInputElement>);
+  onChange: (_event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function TextInput({children, value, onChange}: TextInputProps) {
+const TextInput: React.FC<TextInputProps> = ({children, value, onChange}) => {
   return <>
     <label>{children}</label>
     <input type="text" value={value} onChange={onChange}/>
   </>
 }
+
+export default TextInput

@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "bunx --bun vite",
     "build": "bunx --bun vite build --mode prod",
-    "lint": "bunx --bun eslint .",
-    "tsc": "bunx --bun tsc -b"
+    "lint": "bunx --bun eslint .; bunx --bun tsc -b"
   },
   "dependencies": {
     "react": "^18.3.1",
