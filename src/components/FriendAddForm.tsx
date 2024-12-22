@@ -50,7 +50,7 @@ const FriendAddForm: React.FC<AddFriendProps> = ({onAddFriend}) => {
     {
       isFormOpen &&
       <form className="form-add-friend" onSubmit={handleOnFormSubmit}>
-        <TextInput value={name} onChange={handleOnNameChange}>👯‍♀️Friend name</TextInput>
+        <TextInput value={name} onChange={handleOnNameChange} autofocus={true}>👯‍♀️Friend name</TextInput>
         <TextInput value={image} onChange={handleOnImageChange}>🌄️Image URL</TextInput>
         <Button onClick={handleOnSubmitButtonClick}>Add</Button>
       </form>
