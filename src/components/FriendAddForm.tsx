@@ -1,16 +1,16 @@
 import React, {useState} from "react";
 import TextInput from "./TextInput.tsx";
 import Button from "./Button.tsx";
+import Friend from "../types/Friend";
 
 interface AddFriendProps {
-  onAddFriend: (_id: number, _name: string, _image: string) => void
+  onAddFriend: (_friend: Friend) => void
 }
 
 const FriendAddForm: React.FC<AddFriendProps> = ({onAddFriend}) => {
   const [isFormOpen, setIsFormOpen] = useState(false)
-  const [id, setId] = useState<number>(0)
   const [name, setName] = useState<string>("")
-  const [image, setImage] = useState<string>("")
+  const [image, setImage] = useState<string>("https://i.pravatar.cc/48")
 
   function handleOnFormToggleClick(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
@@ -18,16 +18,21 @@ const FriendAddForm: React.FC<AddFriendProps> = ({onAddFriend}) => {
       setIsFormOpen(false)
     } else {
       setName("")
-      setId(Math.floor(Math.random() * 100000))
-      setImage(`https://i.pravatar.cc/48?u=${id}`)
       setIsFormOpen(true)
     }
   }
 
   function submitForm(event: React.SyntheticEvent) {
     event.preventDefault()
+    const id = Math.floor(Math.random() * 100000)
+    const newFriend: Friend = {
+      id,
+      name,
+      image: `${image}?u=${id}`,
+      balance: 0
+    }
+    onAddFriend(newFriend)
     setIsFormOpen(false)
-    onAddFriend(id, name, image)
   }
 
   function handleOnFormSubmit(event: React.FormEvent<HTMLFormElement>) {

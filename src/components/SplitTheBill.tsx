@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Friend} from "./FriendListItem.tsx";
+import Friend from "../types/Friend";
 import FriendList from "./FriendList.tsx";
 import FriendAddForm from "./FriendAddForm.tsx";
 
@@ -27,14 +27,10 @@ const initialFriends: Friend[] = [
 const SplitTheBill: React.FC = () => {
   const [friends, setFriends] = useState<Friend[]>(initialFriends.slice())
 
-  function handleOnAddFriend(id: number, name: string, image: string): void {
-    setFriends((friends: Friend[]) =>
-      [...friends, {
-        id: id,
-        name: name,
-        image: image,
-        balance: 0,
-      }]
+  function handleOnAddFriend(friend: Friend): void {
+    setFriends((friends: Friend[]) => {
+        return [...friends, friend]
+      }
     )
   }
 

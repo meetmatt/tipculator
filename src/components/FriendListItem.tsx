@@ -1,14 +1,13 @@
 import React from "react";
 import Button from "./Button.tsx";
+import Friend from "../types/Friend";
 
-export interface Friend {
-  id?: number;
-  name: string;
-  image: string;
-  balance: number;
+interface FriendProps {
+  friend: Friend
 }
 
-const FriendListItem: React.FC<Friend> = ({name, image, balance}) => {
+const FriendListItem: React.FC<FriendProps> = ({friend: {balance, image, name}}) => {
+
   return <li>
     <img src={image} alt={name}/>
     <h3>{name}</h3>

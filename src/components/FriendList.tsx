@@ -1,5 +1,6 @@
 import React from "react";
-import FriendListItem, {Friend} from "./FriendListItem.tsx";
+import FriendListItem from "./FriendListItem.tsx";
+import Friend from "../types/Friend";
 
 interface FriendListProps {
   friends: Friend[]
@@ -8,8 +9,8 @@ interface FriendListProps {
 const FriendList: React.FC<FriendListProps> = ({friends}) => {
   return <ul>
     {
-      friends.map((friend) => (
-        <FriendListItem key={friend.id} name={friend.name} image={friend.image} balance={friend.balance}/>
+      friends.map((friend: Friend) => (
+        <FriendListItem key={friend.id} friend={friend}/>
       ))
     }
   </ul>
